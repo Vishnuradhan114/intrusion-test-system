@@ -1,0 +1,5 @@
+CONFIDENTIAL - INTERNAL USE ONLY
+=================================
+Employee Salary Report (DEMO DATA)
+This file exists only to demonstrate confidential-file
+access detection for the intrusion-test-system project.

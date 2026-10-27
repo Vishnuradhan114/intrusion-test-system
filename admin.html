@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin - Detection Dashboard</title>
+<meta http-equiv="refresh" content="10">
+<style>
+  body { font-family: Segoe UI, Arial, sans-serif; background:#0f172a; color:#e2e8f0; margin:0; padding:30px; }
+  h2 { margin-bottom:4px; }
+  .sub { color:#94a3b8; font-size:13px; margin-top:0; }
+  table { width:100%; border-collapse:collapse; margin-bottom:30px; font-size:13px; }
+  th, td { text-align:left; padding:6px 10px; border-bottom:1px solid #334155; }
+  th { color:#93c5fd; }
+  .ALERT { color:#fca5a5; font-weight:600; }
+  .LOGIN_FAIL { color:#fdba74; }
+  .LOGIN_SUCCESS { color:#86efac; }
+  .FILE_ACCESS { color:#67e8f9; }
+  .FILE_UPLOAD { color:#f0abfc; }
+  .SESSION_START { color:#a5b4fc; }
+  .blockrow { background:#1e293b; }
+  button { background:#2563eb; color:white; border:none; padding:4px 10px; border-radius:6px; cursor:pointer; font-size:12px; }
+</style>
+</head>
+<body>
+  <h2>&#128272; Detection Admin Dashboard</h2>
+  <p class="sub">Auto-refreshes every 10s. Showing most recent 200 events.</p>
+
+  <h3>Currently blocked IPs</h3>
+  <table>
+    <tr><th>IP</th><th>Reason</th><th>Blocked At (UTC)</th><th>Blocked Until (UTC)</th><th></th></tr>
+    {% for ip, info in blocked.items() %}
+    <tr class="blockrow">
+      <td>{{ ip }}</td>
+      <td>{{ info.reason }}</td>
+      <td>{{ info.blocked_at }}</td>
+      <td>{{ info.blocked_until }}</td>
+      <td><form method="POST" action="/admin/unblock/{{ ip }}"><button>Unblock</button></form></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">No IPs currently blocked.</td></tr>
+    {% endfor %}
+  </table>
+
+  <h3>Recent Event Log</h3>
+  <table>
+    <tr><th>Time (UTC)</th><th>Type</th><th>IP</th><th>User</th><th>Details</th></tr>
+    {% for e in events %}
+    <tr>
+      <td>{{ e.timestamp }}</td>
+      <td class="{{ e.type }}">{{ e.type }}{% if e.rule %} ({{ e.rule }}){% endif %}</td>
+      <td>{{ e.ip }}</td>
+      <td>{{ e.username or '' }}</td>
+      <td>{{ e.message or e.filename or '' }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>

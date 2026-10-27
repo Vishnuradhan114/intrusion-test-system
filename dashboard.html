@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SecurePortal - Dashboard</title>
+<style>
+  body { font-family: Segoe UI, Arial, sans-serif; background:#0f172a; color:#e2e8f0; margin:0; padding:40px; }
+  .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; }
+  a { color:#60a5fa; }
+  .card { background:#1e293b; padding:24px; border-radius:12px; max-width:600px; margin-bottom:20px; }
+  .file-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #334155; }
+  .tag { background:#7c2d12; color:#fed7aa; font-size:11px; padding:2px 8px; border-radius:10px; }
+  button, .btn { background:#2563eb; color:white; border:none; padding:8px 14px; border-radius:6px; cursor:pointer; text-decoration:none; font-size:13px; }
+  input[type=file] { color:#e2e8f0; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <h2>Welcome, {{ username }} &#128075;</h2>
+    <a href="/logout">Logout</a>
+  </div>
+
+  <div class="card">
+    <h3>Company Files</h3>
+    <div class="file-row">
+      <span>{{ confidential_file }} <span class="tag">CONFIDENTIAL</span></span>
+      <a class="btn" href="/files/{{ confidential_file }}">Download</a>
+    </div>
+    {% for f in decoy_files %}
+    <div class="file-row">
+      <span>{{ f }}</span>
+      <a class="btn" href="/files/{{ f }}">Download</a>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="card">
+    <h3>Upload a file</h3>
+    <p style="font-size:13px;color:#94a3b8;">(Used to simulate copying/installing a file on the target system.)</p>
+    <form id="uploadForm">
+      <input type="file" name="file" id="fileInput">
+      <button type="submit">Upload</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData();
+      const f = document.getElementById('fileInput').files[0];
+      if (f) fd.append('file', f);
+      else fd.append('filename', 'test_file.txt');
+      await fetch('/upload', { method: 'POST', body: fd });
+      alert('File uploaded (logged for detection).');
+    });
+  </script>
+</body>
+</html>
