@@ -1,0 +1,24 @@
+# Optional: Render "Blueprint" file. You can also just create the Web
+# Service manually in the Render dashboard (see README.md) - either works.
+services:
+  - type: web
+    name: intrusion-test-system
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --workers 1 --threads 4 --bind 0.0.0.0:$PORT
+    envVars:
+      - key: APP_SECRET_KEY
+        generateValue: true
+      - key: DEMO_MODE
+        value: "true"
+      - key: BUSINESS_START_HOUR
+        value: "9"
+      - key: BUSINESS_END_HOUR
+        value: "18"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: ALERT_TO_EMAIL
+        sync: false

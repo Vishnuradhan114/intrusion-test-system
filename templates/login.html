@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SecurePortal - Login</title>
+<style>
+  body { font-family: Segoe UI, Arial, sans-serif; background:#0f172a; color:#e2e8f0;
+         display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }
+  .card { background:#1e293b; padding:40px; border-radius:12px; width:320px;
+          box-shadow:0 10px 30px rgba(0,0,0,.4); }
+  h1 { font-size:20px; margin-bottom:4px; }
+  p.sub { color:#94a3b8; font-size:13px; margin-top:0; margin-bottom:24px;}
+  input { width:100%; padding:10px; margin-bottom:14px; border-radius:6px; border:1px solid #334155;
+          background:#0f172a; color:#e2e8f0; box-sizing:border-box; }
+  button { width:100%; padding:10px; border:none; border-radius:6px; background:#2563eb; color:white;
+           font-weight:600; cursor:pointer; }
+  button:hover { background:#1d4ed8; }
+  .error { background:#7f1d1d; color:#fecaca; padding:8px; border-radius:6px; margin-bottom:14px; font-size:13px; }
+  .demo { margin-top:18px; font-size:12px; color:#64748b; line-height:1.5; }
+  .badge { display:inline-block; background:#334155; color:#93c5fd; padding:2px 8px; border-radius:10px; font-size:11px; margin-top:10px;}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>&#128274; SecurePortal</h1>
+    <p class="sub">Target test system - Intrusion Detection Project</p>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <form method="POST" action="/login">
+      <input type="text" name="username" placeholder="Username" autocomplete="off" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+    <div class="demo">
+      Demo accounts: <b>admin / Admin@123</b>, <b>staff / Staff@123</b>
+    </div>
+    {% if demo_mode %}<span class="badge">DEMO_MODE on - attacker scripts can use X-Test-IP / X-Test-Hour</span>{% endif %}
+  </div>
+</body>
+</html>
